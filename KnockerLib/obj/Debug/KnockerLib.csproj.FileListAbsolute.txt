@@ -1,0 +1,4 @@
+c:\users\123\documents\visual studio 2015\Projects\KnockerWPF\KnockerLib\bin\Debug\KnockerLib.dll
+c:\users\123\documents\visual studio 2015\Projects\KnockerWPF\KnockerLib\bin\Debug\KnockerLib.pdb
+c:\users\123\documents\visual studio 2015\Projects\KnockerWPF\KnockerLib\obj\Debug\KnockerLib.dll
+c:\users\123\documents\visual studio 2015\Projects\KnockerWPF\KnockerLib\obj\Debug\KnockerLib.pdb

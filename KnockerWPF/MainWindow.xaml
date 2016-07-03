@@ -1,0 +1,75 @@
+﻿<Window x:Name="main_window" x:Class="KnockerWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:KnockerWPF"
+        mc:Ignorable="d"
+        Title="Knocker" Height="280" Width="646" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="dg1">
+            <Setter Property="DataGrid.BorderBrush" Value="#FF2B65E2"/>
+            <Setter Property="DataGrid.BorderThickness" Value="2"/>
+            <Setter Property="DataGrid.ColumnHeaderStyle">
+                <Setter.Value>
+                    <Style>
+                        <Setter Property="DataGridColumnHeader.BorderThickness">
+                            <Setter.Value>
+                                <Thickness Left="0" Right="0" Top="0" Bottom="2"/>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="DataGridColumnHeader.BorderBrush" Value="#FF2B65E2"/>
+                        <Setter Property="DataGridColumnHeader.HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="DataGridColumnHeader.FontFamily" Value="Courier New"/>
+                        <Setter Property="DataGridColumnHeader.FontSize" Value="14"/>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="dgcs1" TargetType="DataGridCell">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Button x:Name="btn_knock" Content="Knock-knock!" HorizontalAlignment="Left" Margin="545,165,0,0" VerticalAlignment="Top" Width="84" Height="50" Click="StartKnockingAsync"  FontFamily="Arial Narrow" FontSize="14"/>
+        <DataGrid x:Name="rooms_list" 
+                  HorizontalAlignment="Left" 
+                  Margin="10,16,0,0" 
+                  VerticalAlignment="Top" 
+                  Height="224" Width="522" 
+                  CanUserReorderColumns="False" 
+                  SelectionMode="Single" 
+                  CanUserResizeRows="False" 
+                  ItemsSource="{Binding Path=Rooms, Source=Rooms}" 
+                  DataContext="{Binding Path=Rooms, Source=Rooms}" 
+                  AutoGenerateColumns="False" 
+                  IsReadOnly="True" 
+                  ColumnWidth="*" 
+                  Style="{StaticResource ResourceKey=dg1}" 
+                  HeadersVisibility="Column" 
+                  RowHeight="25">
+            <DataGrid.Resources>
+                <Style TargetType="{x:Type DataGridCell}">
+                    <Style.Triggers>
+                        <Trigger Property="DataGridCell.IsSelected" Value="True">
+                            <Setter Property="Background" Value="#FFF1FB8C" />
+                            <Setter Property="Foreground" Value="Black" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Resources>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Room address" Binding="{Binding Path=Address}"/>
+                <DataGridTextColumn Header="Room name" Binding="{Binding Path=Name}"/>
+                <DataGridTextColumn Header="Room state" Binding="{Binding Path=State, NotifyOnSourceUpdated=True, Mode=TwoWay, IsAsync=True, FallbackValue=...}"/>
+                <DataGridTextColumn Header="State details" Binding="{Binding Path=Details, NotifyOnSourceUpdated=True, Mode=TwoWay, IsAsync=True, FallbackValue=...}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="btn_add" Content="Add room..." HorizontalAlignment="Left" Margin="545,16,0,0" VerticalAlignment="Top" Width="84" Height="27" Click="btn_add_Click" FontFamily="Arial Narrow" FontSize="14"/>
+        <Button x:Name="btn_del" Content="Remove room" HorizontalAlignment="Left" Margin="545,51,0,0" VerticalAlignment="Top" Width="84" Height="27" IsEnabled="False" Click="btn_del_Click" FontFamily="Arial Narrow" FontSize="14"/>
+        <ProgressBar x:Name="pbar" HorizontalAlignment="Left" Height="17" Margin="545,223,0,0" VerticalAlignment="Top" Width="84"/>
+        <Button x:Name="btn_del_all" Content="Clear list" HorizontalAlignment="Left" Margin="545,86,0,0" VerticalAlignment="Top" Width="84" Height="27" FontFamily="Arial Narrow" FontSize="14" Click="btn_del_all_Click"/>
+
+    </Grid>
+</Window>

@@ -1,0 +1,4 @@
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerLib\bin\Release\KnockerLib.dll
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerLib\bin\Release\KnockerLib.pdb
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerLib\obj\Release\KnockerLib.dll
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerLib\obj\Release\KnockerLib.pdb

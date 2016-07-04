@@ -124,4 +124,22 @@
   <data name="dr_pic" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dr_pic.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="ic_minus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ic_minus.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ic_plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ic_plus.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="ic_trash2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\ic_trash2.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pic_fist" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pic_fist.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pic_minus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pic_minus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pic_plus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pic_plus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

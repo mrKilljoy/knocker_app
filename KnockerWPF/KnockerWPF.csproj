@@ -119,6 +119,24 @@
   <ItemGroup>
     <None Include="Resources\dr_pic.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pic_minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pic_plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_plus.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_minus.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ic_trash2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pic_fist.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

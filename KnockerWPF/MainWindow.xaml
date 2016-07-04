@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KnockerWPF"
         mc:Ignorable="d"
-        Title="Knocker" Height="280" Width="581" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" MinWidth="602" MinHeight="280">
+        Title="Knocker" Height="349" Width="644" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" MinWidth="702" MinHeight="369">
     <Window.Resources>
         <Style x:Key="dg1">
             <Setter Property="DataGrid.BorderBrush" Value="#FF2B65E2"/>
@@ -32,9 +32,14 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Button x:Name="btn_knock" Content="Knock-knock!" HorizontalAlignment="Right" Margin="0,165,11,0" VerticalAlignment="Top" Width="84" Height="50" Click="StartKnockingAsync"  FontFamily="Arial Narrow" FontSize="14"/>
+        <Button x:Name="btn_knock" HorizontalAlignment="Right" Margin="0,248,10,0" VerticalAlignment="Top" Width="109" Height="46" Click="StartKnockingAsync"  FontFamily="Arial Narrow" FontSize="14">
+            <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock Text="Knock!  " VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="18"/>
+                <Image Source="/Resources/pic_fist.png" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
+            </Grid>
+        </Button>
         <DataGrid x:Name="rooms_list" 
-                  Margin="10,16,108,15" 
+                  Margin="10,16,131,15" 
                   CanUserReorderColumns="False" 
                   SelectionMode="Single" 
                   CanUserResizeRows="False" 
@@ -63,10 +68,25 @@
                 <DataGridTextColumn Header="State details" Binding="{Binding Path=Details, NotifyOnSourceUpdated=True, Mode=TwoWay, IsAsync=True, FallbackValue=...}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="btn_add" Content="Add room..." HorizontalAlignment="Right" Margin="0,16,11,0" VerticalAlignment="Top" Width="84" Height="27" Click="btn_add_Click" FontFamily="Arial Narrow" FontSize="14"/>
-        <Button x:Name="btn_del" Content="Remove room" HorizontalAlignment="Right" Margin="0,51,11,0" VerticalAlignment="Top" Width="84" Height="27" IsEnabled="False" Click="btn_del_Click" FontFamily="Arial Narrow" FontSize="14"/>
-        <ProgressBar x:Name="pbar" HorizontalAlignment="Right" Height="17" Margin="0,223,11,0" VerticalAlignment="Top" Width="84"/>
-        <Button x:Name="btn_del_all" Content="Clear list" HorizontalAlignment="Right" Margin="0,86,11,0" VerticalAlignment="Top" Width="84" Height="27" FontFamily="Arial Narrow" FontSize="14" Click="btn_del_all_Click"/>
+        <Button x:Name="btn_add" HorizontalAlignment="Right" Margin="0,16,10,0" VerticalAlignment="Top" Width="110" Height="46" Click="btn_add_Click" FontFamily="Arial Narrow" FontSize="14">
+            <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock Text="Add room " VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="14"/>
+                <Image Source="/Resources/ic_plus.ico" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
+            </Grid>
+        </Button>
+        <Button x:Name="btn_del" HorizontalAlignment="Right" Margin="0,71,10,0" VerticalAlignment="Top" Width="110" Height="46" IsEnabled="False" Click="btn_del_Click" FontFamily="Arial Narrow" FontSize="14">
+            <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock Text="Drop room" VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="14"/>
+                <Image Source="/Resources/ic_minus.ico" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
+            </Grid>
+        </Button>
+        <ProgressBar x:Name="pbar" HorizontalAlignment="Right" Height="25" Margin="0,304,10,0" VerticalAlignment="Top" Width="109"/>
+        <Button x:Name="btn_del_all" HorizontalAlignment="Right" Margin="0,126,10,0" VerticalAlignment="Top" Width="109" Height="46" FontFamily="Arial Narrow" FontSize="14" Click="btn_del_all_Click">
+            <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <TextBlock Text="Clear all  " VerticalAlignment="Center" HorizontalAlignment="Right"  TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="15"/>
+                <Image Source="/Resources/ic_trash2.ico" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
+            </Grid>
+        </Button>
 
     </Grid>
 </Window>

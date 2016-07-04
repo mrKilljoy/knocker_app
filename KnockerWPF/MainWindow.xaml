@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KnockerWPF"
         mc:Ignorable="d"
-        Title="Knocker" Height="280" Width="646" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Knocker" Height="280" Width="581" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" MinWidth="602" MinHeight="280">
     <Window.Resources>
         <Style x:Key="dg1">
             <Setter Property="DataGrid.BorderBrush" Value="#FF2B65E2"/>
@@ -32,12 +32,9 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Button x:Name="btn_knock" Content="Knock-knock!" HorizontalAlignment="Left" Margin="545,165,0,0" VerticalAlignment="Top" Width="84" Height="50" Click="StartKnockingAsync"  FontFamily="Arial Narrow" FontSize="14"/>
+        <Button x:Name="btn_knock" Content="Knock-knock!" HorizontalAlignment="Right" Margin="0,165,11,0" VerticalAlignment="Top" Width="84" Height="50" Click="StartKnockingAsync"  FontFamily="Arial Narrow" FontSize="14"/>
         <DataGrid x:Name="rooms_list" 
-                  HorizontalAlignment="Left" 
-                  Margin="10,16,0,0" 
-                  VerticalAlignment="Top" 
-                  Height="224" Width="522" 
+                  Margin="10,16,108,15" 
                   CanUserReorderColumns="False" 
                   SelectionMode="Single" 
                   CanUserResizeRows="False" 
@@ -66,10 +63,10 @@
                 <DataGridTextColumn Header="State details" Binding="{Binding Path=Details, NotifyOnSourceUpdated=True, Mode=TwoWay, IsAsync=True, FallbackValue=...}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="btn_add" Content="Add room..." HorizontalAlignment="Left" Margin="545,16,0,0" VerticalAlignment="Top" Width="84" Height="27" Click="btn_add_Click" FontFamily="Arial Narrow" FontSize="14"/>
-        <Button x:Name="btn_del" Content="Remove room" HorizontalAlignment="Left" Margin="545,51,0,0" VerticalAlignment="Top" Width="84" Height="27" IsEnabled="False" Click="btn_del_Click" FontFamily="Arial Narrow" FontSize="14"/>
-        <ProgressBar x:Name="pbar" HorizontalAlignment="Left" Height="17" Margin="545,223,0,0" VerticalAlignment="Top" Width="84"/>
-        <Button x:Name="btn_del_all" Content="Clear list" HorizontalAlignment="Left" Margin="545,86,0,0" VerticalAlignment="Top" Width="84" Height="27" FontFamily="Arial Narrow" FontSize="14" Click="btn_del_all_Click"/>
+        <Button x:Name="btn_add" Content="Add room..." HorizontalAlignment="Right" Margin="0,16,11,0" VerticalAlignment="Top" Width="84" Height="27" Click="btn_add_Click" FontFamily="Arial Narrow" FontSize="14"/>
+        <Button x:Name="btn_del" Content="Remove room" HorizontalAlignment="Right" Margin="0,51,11,0" VerticalAlignment="Top" Width="84" Height="27" IsEnabled="False" Click="btn_del_Click" FontFamily="Arial Narrow" FontSize="14"/>
+        <ProgressBar x:Name="pbar" HorizontalAlignment="Right" Height="17" Margin="0,223,11,0" VerticalAlignment="Top" Width="84"/>
+        <Button x:Name="btn_del_all" Content="Clear list" HorizontalAlignment="Right" Margin="0,86,11,0" VerticalAlignment="Top" Width="84" Height="27" FontFamily="Arial Narrow" FontSize="14" Click="btn_del_all_Click"/>
 
     </Grid>
 </Window>

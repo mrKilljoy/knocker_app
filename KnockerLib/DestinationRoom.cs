@@ -32,6 +32,18 @@ namespace KnockerLib
             Name = room_name;
         }
 
+        public DestinationRoom(Uri address, string room_name, CheckType check_type)
+        {
+            if (address == null)
+                throw new ArgumentNullException("address");
+
+            _state = RoomState.Unknown;
+            Address = address;
+            Name = room_name;
+            TypeOfCheck = check_type;
+        }
+
+
         public Uri Address { get; private set; }
 
         public string Name { get; private set; }
@@ -56,8 +68,9 @@ namespace KnockerLib
             }
         }
 
+        public CheckType TypeOfCheck { get; set; } = CheckType.Ping;
+
         public event PropertyChangedEventHandler PropertyChanged;
-        
     }
 
     public enum RoomState
@@ -65,5 +78,11 @@ namespace KnockerLib
         Open = 1,
         Closed = 2,
         Unknown = 0
+    }
+
+    public enum CheckType
+    {
+        Ping = 0,
+        Trace = 1
     }
 }

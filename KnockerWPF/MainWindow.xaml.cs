@@ -25,7 +25,6 @@ namespace KnockerWPF
         public MainWindow()
         {
             knckr = new KnockerLib.Knocker();
-
             InitializeComponent();
 
             EventSubscriber();
@@ -76,6 +75,7 @@ namespace KnockerWPF
             }
 
             //Cursor = Cursors.Wait;
+            btn_knock.IsEnabled = false;
             pbar.IsIndeterminate = true;    
 
             TaskFactory tf = new TaskFactory();
@@ -84,7 +84,11 @@ namespace KnockerWPF
                 tasks[i] = knckr.KnockAtAsync(i);
 
             await tf.ContinueWhenAll(tasks, (x) => {
-                Dispatcher.Invoke(() => { pbar.IsIndeterminate = false; });
+                Dispatcher.Invoke(() => 
+                {
+                    pbar.IsIndeterminate = false;
+                    btn_knock.IsEnabled = true;
+                });
             });
 
             //Cursor = Cursors.Arrow;

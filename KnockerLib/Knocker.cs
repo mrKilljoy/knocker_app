@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.NetworkInformation;
 using System.Net;
+using System.Net.Sockets;
 using System.Collections.ObjectModel;
 
 namespace KnockerLib
@@ -20,14 +21,15 @@ namespace KnockerLib
 
         public ObservableCollection<DestinationRoom> Rooms { get { return _rooms; } }
 
-        public void SelectRoom(Uri room_address, string room_name)
+        public void SelectRoom(Uri room_address, string room_name, CheckType check_form = CheckType.Ping)
         {
             if (room_address == null)
                 return;
-
+            
             _rooms.Add(new DestinationRoom(
                 room_address,
-                string.IsNullOrEmpty(room_name) ? room_address.AbsoluteUri.ToString() : room_name
+                string.IsNullOrEmpty(room_name) ? room_address.AbsoluteUri.ToString() : room_name,
+                check_form
                 ));
         }
 
@@ -106,87 +108,149 @@ namespace KnockerLib
             return results;
         }
 
+        /// <summary>
+        /// Check availability of single resource
+        /// </summary>
+        /// <param name="index">Room index</param>
         public void KnockAt(int index)
         {
             if (_rooms.Count < 1 || index >= _rooms.Count)
                 return;
 
-            Ping pocker = new Ping();
-            PingReply reply = null;
             var room = _rooms.ElementAt(index);
 
-            try
+            switch (room.TypeOfCheck)
             {
-                reply = pocker.Send(room.Address.Host);
-            }
-            catch (Exception)
-            {
-                room.State = RoomState.Unknown;
-                room.Details = "UnknownHostException";
-                return;
-            }
+                case CheckType.Ping:
+                    {
+                        using (Ping pocker = new Ping())
+                        {
+                            PingReply reply = null;
 
-            switch (reply.Status)
-            {
-                case IPStatus.Success:
-                    {
-                        room.State = RoomState.Open;
-                        break;
+                            try
+                            {
+                                reply = pocker.Send(room.Address.Host);
+
+                                if (reply.Status == IPStatus.Success)
+                                    room.State = RoomState.Open;
+                                else
+                                    room.State = RoomState.Unknown;
+                                room.Details = reply.Status.ToString();
+                            }
+                            catch (Exception)
+                            {
+                                room.State = RoomState.Unknown;
+                                room.Details = "UnknownHostException";
+                            }
+                        }
+                        return;
                     }
-                case IPStatus.Unknown:
+
+                case CheckType.Trace:
                     {
-                        room.State = RoomState.Unknown;
-                        break;
+                        Traceroute(room).RunSynchronously();
+                        return;
                     }
+
                 default:
-                    {
-                        room.State = RoomState.Unknown;
-                        room.Details = reply.Status.ToString();
-                        break;
-                    }
+                    break;
             }
         }
 
+        /// <summary>
+        /// Check availability of single resource (async version)
+        /// </summary>
+        /// <param name="index">Room index</param>
         public async Task KnockAtAsync(int index)
         {
             if (_rooms.Count < 1 || index >= _rooms.Count)
                 return;
 
-            Ping pocker = new Ping();
-            PingReply reply = null;
             var room = _rooms.ElementAt(index);
 
-            try
+            switch (room.TypeOfCheck)
             {
-                reply = await pocker.SendPingAsync(room.Address.Host);
-            }
-            catch (Exception ex)
-            {
-                room.State = RoomState.Unknown;
-                room.Details = "UnknownHostException";
-                return;
-            }
-            
-            switch (reply.Status)
-            {
-                case IPStatus.Success:
+                case CheckType.Ping:
                     {
-                        room.State = RoomState.Open;
-                        room.Details = "Success";
+                        using (Ping pocker = new Ping())
+                        {
+                            PingReply reply = null;
+
+                            try
+                            {
+                                reply = await pocker.SendPingAsync(room.Address.Host);
+
+                                if (reply.Status == IPStatus.Success)
+                                    room.State = RoomState.Open;
+                                else
+                                    room.State = RoomState.Unknown;
+                                room.Details = reply.Status.ToString();
+
+                            }
+                            catch (Exception ex)
+                            {
+                                room.State = RoomState.Unknown;
+                                room.Details = "UnknownHostException";
+                            }
+                        }
                         break;
-                    }
-                case IPStatus.Unknown:
+                    } 
+                case CheckType.Trace:
                     {
-                        room.State = RoomState.Unknown;
-                        room.Details = "Unknown";
+                        await Traceroute(room);
                         break;
                     }
                 default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Traceroute imitation
+        /// </summary>
+        /// <param name="room">Testing room</param>
+        private async Task Traceroute(DestinationRoom room)
+        {
+            PingReply ping_result = null;
+            
+            StringBuilder trace_result = new StringBuilder();
+            using (Ping sender = new Ping())
+            {
+                PingOptions pingOptions = new PingOptions(1, true);
+                System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
+                byte[] bytes = new byte[32];
+                int maxHops = 30;
+
+                for (int i = 1; i < maxHops + 1; i++)
+                {
+                    stopWatch.Reset();
+                    stopWatch.Start();
+                    ping_result = await sender.SendPingAsync(room.Address.Host, 1000, new byte[32], pingOptions);
+                    stopWatch.Stop();
+
+                    if (ping_result.Status != IPStatus.TtlExpired && ping_result.Status != IPStatus.Success)
+                        trace_result.AppendLine(string.Format("{0} \t{1}", i, ping_result.Status.ToString()));
+                    else
                     {
-                        room.State = RoomState.Unknown;
-                        room.Details = reply.Status.ToString();
+                        IPHostEntry host = Dns.Resolve(ping_result.Address.ToString());
+
+                        if (host.HostName == ping_result.Address.ToString())
+                            trace_result.AppendLine(string.Format("{0}\t{1} ms\t{2}", i, stopWatch.ElapsedMilliseconds, ping_result.Address));
+                        else
+                            trace_result.AppendLine(string.Format("{0}\t{1} ms\t{2} \t[{3}]", i, stopWatch.ElapsedMilliseconds, ping_result.Address, host.HostName));
+                            
+                    }
+
+                    if (ping_result.Status == IPStatus.Success)
+                    {
+                        room.State = RoomState.Open;
                         break;
                     }
+
+                    pingOptions.Ttl++;
+                }
+
+                room.Details = trace_result.ToString();
             }
         }
     }

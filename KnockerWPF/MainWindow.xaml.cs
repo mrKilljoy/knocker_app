@@ -158,5 +158,21 @@ namespace KnockerWPF
         {
             knckr.Rooms.Clear();
         }
+
+        private async void btn_trace_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Uri route = new Uri(txt_route_address.Text);
+                string response = null;
+                response = await knckr.TraceTheRoute(route);
+
+                txt_details.Text = response;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "All fucked up!", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }

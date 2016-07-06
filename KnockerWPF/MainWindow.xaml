@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KnockerWPF"
         mc:Ignorable="d"
-        Title="Knocker" Height="349" Width="644" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" MinWidth="702" MinHeight="369">
+        Title="Knocker" Height="414" Width="720" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" MinWidth="702" MinHeight="369">
     <Window.Resources>
         <Style x:Key="dg1">
             <Setter Property="DataGrid.BorderBrush" Value="#FF2B65E2"/>
@@ -32,61 +32,89 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <Button x:Name="btn_knock" HorizontalAlignment="Right" Margin="0,248,10,0" VerticalAlignment="Top" Width="109" Height="46" Click="StartKnockingAsync"  FontFamily="Arial Narrow" FontSize="14">
-            <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <TextBlock Text="Knock!  " VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="18"/>
-                <Image Source="/Resources/pic_fist.png" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
-            </Grid>
-        </Button>
-        <DataGrid x:Name="rooms_list" 
-                  Margin="10,16,131,15" 
-                  CanUserReorderColumns="False" 
-                  SelectionMode="Single" 
-                  CanUserResizeRows="False" 
-                  ItemsSource="{Binding Path=Rooms, Source=Rooms}" 
-                  DataContext="{Binding Path=Rooms, Source=Rooms}" 
-                  AutoGenerateColumns="False" 
-                  IsReadOnly="True" 
-                  ColumnWidth="*" 
-                  Style="{StaticResource ResourceKey=dg1}" 
-                  HeadersVisibility="Column" 
-                  RowHeight="25">
-            <DataGrid.Resources>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <Style.Triggers>
-                        <Trigger Property="DataGridCell.IsSelected" Value="True">
-                            <Setter Property="Background" Value="#FFF1FB8C" />
-                            <Setter Property="Foreground" Value="Black" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.Resources>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Room address" Binding="{Binding Path=Address}"/>
-                <DataGridTextColumn Header="Room name" Binding="{Binding Path=Name}"/>
-                <DataGridTextColumn Header="Room state" Binding="{Binding Path=State, NotifyOnSourceUpdated=True, Mode=TwoWay, IsAsync=True, FallbackValue=...}"/>
-                <DataGridTextColumn Header="State details" Binding="{Binding Path=Details, NotifyOnSourceUpdated=True, Mode=TwoWay, IsAsync=True, FallbackValue=...}"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Button x:Name="btn_add" HorizontalAlignment="Right" Margin="0,16,10,0" VerticalAlignment="Top" Width="110" Height="46" Click="btn_add_Click" FontFamily="Arial Narrow" FontSize="14">
-            <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <TextBlock Text="Add room " VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="14"/>
-                <Image Source="/Resources/ic_plus.ico" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
-            </Grid>
-        </Button>
-        <Button x:Name="btn_del" HorizontalAlignment="Right" Margin="0,71,10,0" VerticalAlignment="Top" Width="110" Height="46" IsEnabled="False" Click="btn_del_Click" FontFamily="Arial Narrow" FontSize="14">
-            <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <TextBlock Text="Drop room" VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="14"/>
-                <Image Source="/Resources/ic_minus.ico" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
-            </Grid>
-        </Button>
-        <ProgressBar x:Name="pbar" HorizontalAlignment="Right" Height="25" Margin="0,304,10,0" VerticalAlignment="Top" Width="109"/>
-        <Button x:Name="btn_del_all" HorizontalAlignment="Right" Margin="0,126,10,0" VerticalAlignment="Top" Width="109" Height="46" FontFamily="Arial Narrow" FontSize="14" Click="btn_del_all_Click">
-            <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <TextBlock Text="Clear all  " VerticalAlignment="Center" HorizontalAlignment="Right"  TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="15"/>
-                <Image Source="/Resources/ic_trash2.ico" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
-            </Grid>
-        </Button>
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                <GradientStop Color="#FFEAF0FF" Offset="0.1"/>
+                <GradientStop Color="#FF2F499E"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <TabControl x:Name="tabControl" HorizontalAlignment="Left" Height="389" VerticalAlignment="Top" Width="714">
+            <TabItem Header="Ping check">
+                <Grid Background="#FFE5E5E5">
+                    <Button x:Name="btn_knock" HorizontalAlignment="Left" Margin="582,243,0,0" VerticalAlignment="Top" Width="109" Height="46" Click="StartKnockingAsync"  FontFamily="Arial Narrow" FontSize="14">
+                        <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <TextBlock Text="Knock!  " VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="18"/>
+                            <Image Source="/Resources/pic_fist.png" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
+                        </Grid>
+                    </Button>
+                    <DataGrid x:Name="rooms_list" 
+                		Margin="10,10,138,34" 
+                		CanUserReorderColumns="False" 
+                		SelectionMode="Single" 
+                		CanUserResizeRows="False" 
+                		ItemsSource="{Binding Rooms, Source=Rooms}" 
+                		DataContext="{Binding Rooms, Source=Rooms}" 
+                		AutoGenerateColumns="False" 
+                		IsReadOnly="True" 
+                		ColumnWidth="*" 
+                		HeadersVisibility="Column" 
+                		RowHeight="25">
+                        <DataGrid.Resources>
+                            <Style TargetType="{x:Type DataGridCell}">
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#FFF1FB8C" />
+                                        <Setter Property="Foreground" Value="Black" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.Resources>
+                        <DataGrid.Style>
+                            <StaticResource ResourceKey="dg1"/>
+                        </DataGrid.Style>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Room address" Binding="{Binding Address}"/>
+                            <DataGridTextColumn Header="Room name" Binding="{Binding Name}"/>
+                            <DataGridTextColumn Header="Room state" Binding="{Binding State, FallbackValue=..., IsAsync=True, Mode=TwoWay, NotifyOnSourceUpdated=True}"/>
+                            <DataGridTextColumn Header="State details" Binding="{Binding Details, FallbackValue=..., IsAsync=True, Mode=TwoWay, NotifyOnSourceUpdated=True}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button x:Name="btn_add" HorizontalAlignment="Left" Margin="581,10,0,0" VerticalAlignment="Top" Width="110" Height="46" Click="btn_add_Click" FontFamily="Arial Narrow" FontSize="14">
+                        <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <TextBlock Text="Add room " VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="14"/>
+                            <Image Source="/Resources/ic_plus.ico" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
+                        </Grid>
+                    </Button>
+                    <Button x:Name="btn_del" HorizontalAlignment="Left" Margin="581,65,0,0" VerticalAlignment="Top" Width="110" Height="46" IsEnabled="False" Click="btn_del_Click" FontFamily="Arial Narrow" FontSize="14">
+                        <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <TextBlock Text="Drop room" VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="14"/>
+                            <Image Source="/Resources/ic_minus.ico" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
+                        </Grid>
+                    </Button>
+                    <ProgressBar x:Name="pbar" Height="24" Margin="582,298,13,0" VerticalAlignment="Top"/>
+                    <Button x:Name="btn_del_all" HorizontalAlignment="Left" Margin="582,120,0,0" VerticalAlignment="Top" Width="109" Height="46" FontFamily="Arial Narrow" FontSize="14" Click="btn_del_all_Click">
+                        <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <TextBlock Text="Clear all  " VerticalAlignment="Center" HorizontalAlignment="Right"  TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="15"/>
+                            <Image Source="/Resources/ic_trash2.ico" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
+                        </Grid>
+                    </Button>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Traceroute check">
+                <Grid Background="#FFE5E5E5" HorizontalAlignment="Left" Width="704">
+                    <TextBox x:Name="txt_route_address" HorizontalAlignment="Left" Height="23" Margin="49,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="217"/>
+                    <Button x:Name="btn_trace" HorizontalAlignment="Left" Margin="362,21,0,0" VerticalAlignment="Top" Width="110" Height="46" FontFamily="Arial Narrow" FontSize="14" Click="btn_trace_Click">
+                        <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <TextBlock Text="Knock!  " VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="18"/>
+                            <Image Source="Resources/pic_fist.png" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
+                        </Grid>
+                    </Button>
+                    <ScrollViewer Margin="49,79,337,70" BorderBrush="Black" BorderThickness="1">
+                        <TextBlock x:Name="txt_details" TextWrapping="WrapWithOverflow" Background="#FFFBFFA5" FontSize="12" FontFamily="Courier New" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+        </TabControl>
 
     </Grid>
 </Window>

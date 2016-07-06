@@ -42,7 +42,7 @@ namespace KnockerLib
             Name = room_name;
             TypeOfCheck = check_type;
         }
-
+        
 
         public Uri Address { get; private set; }
 

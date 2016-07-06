@@ -16,3 +16,5 @@ C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerWPF\obj\Deb
 C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerWPF\obj\Debug\KnockerWPF.csproj.GenerateResource.Cache
 C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerWPF\obj\Debug\KnockerWPF.exe
 C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerWPF\obj\Debug\KnockerWPF.pdb
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerWPF\obj\Debug\modal_check_result.g.cs
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerWPF\obj\Debug\modal_check_result.baml

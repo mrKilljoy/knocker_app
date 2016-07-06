@@ -14,12 +14,16 @@ namespace KnockerLib
     {
         private ObservableCollection<DestinationRoom> _rooms;
 
+        private DestinationRoom _traceroute = null;
+
         public Knocker()
         {
             _rooms = new ObservableCollection<DestinationRoom>();
         }
 
         public ObservableCollection<DestinationRoom> Rooms { get { return _rooms; } }
+
+        public DestinationRoom SelectedTrace { get { return _traceroute; } }
 
         public void SelectRoom(Uri room_address, string room_name, CheckType check_form = CheckType.Ping)
         {
@@ -148,7 +152,7 @@ namespace KnockerLib
 
                 case CheckType.Trace:
                     {
-                        Traceroute(room).RunSynchronously();
+                        //Traceroute(room).RunSynchronously();
                         return;
                     }
 
@@ -168,40 +172,26 @@ namespace KnockerLib
 
             var room = _rooms.ElementAt(index);
 
-            switch (room.TypeOfCheck)
+            using (Ping pocker = new Ping())
             {
-                case CheckType.Ping:
-                    {
-                        using (Ping pocker = new Ping())
-                        {
-                            PingReply reply = null;
+                PingReply reply = null;
 
-                            try
-                            {
-                                reply = await pocker.SendPingAsync(room.Address.Host);
+                try
+                {
+                    reply = await pocker.SendPingAsync(room.Address.Host);
 
-                                if (reply.Status == IPStatus.Success)
-                                    room.State = RoomState.Open;
-                                else
-                                    room.State = RoomState.Unknown;
-                                room.Details = reply.Status.ToString();
+                    if (reply.Status == IPStatus.Success)
+                        room.State = RoomState.Open;
+                    else
+                        room.State = RoomState.Unknown;
+                    room.Details = reply.Status.ToString();
 
-                            }
-                            catch (Exception ex)
-                            {
-                                room.State = RoomState.Unknown;
-                                room.Details = "UnknownHostException";
-                            }
-                        }
-                        break;
-                    } 
-                case CheckType.Trace:
-                    {
-                        await Traceroute(room);
-                        break;
-                    }
-                default:
-                    break;
+                }
+                catch (Exception ex)
+                {
+                    room.State = RoomState.Unknown;
+                    room.Details = "UnknownHostException";
+                }
             }
         }
 
@@ -209,7 +199,7 @@ namespace KnockerLib
         /// Traceroute imitation
         /// </summary>
         /// <param name="room">Testing room</param>
-        private async Task Traceroute(DestinationRoom room)
+        private async Task<string> Traceroute(Uri room_address)
         {
             PingReply ping_result = null;
             
@@ -225,7 +215,7 @@ namespace KnockerLib
                 {
                     stopWatch.Reset();
                     stopWatch.Start();
-                    ping_result = await sender.SendPingAsync(room.Address.Host, 1000, new byte[32], pingOptions);
+                    ping_result = await sender.SendPingAsync(room_address.Host, 1000, new byte[32], pingOptions);
                     stopWatch.Stop();
 
                     if (ping_result.Status != IPStatus.TtlExpired && ping_result.Status != IPStatus.Success)
@@ -242,16 +232,24 @@ namespace KnockerLib
                     }
 
                     if (ping_result.Status == IPStatus.Success)
-                    {
-                        room.State = RoomState.Open;
                         break;
-                    }
 
                     pingOptions.Ttl++;
                 }
 
-                room.Details = trace_result.ToString();
+                return trace_result.ToString();
             }
+        }
+
+        public async Task<string> TraceTheRoute(Uri route_address)
+        {
+            if (route_address == null)
+                return null;
+
+            DestinationRoom routed_room = new DestinationRoom(route_address, null, CheckType.Trace);
+            string answer = await Traceroute(routed_room.Address);
+
+            return answer;
         }
     }
 }

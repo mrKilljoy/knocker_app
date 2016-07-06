@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerWPF\App.xaml
-21112280815
+3-971825789
 
-10-1966001682
+11946269807
 15-262303531
-MainWindow.xaml;modal_newroom.xaml;
+MainWindow.xaml;modal_check_result.xaml;modal_newroom.xaml;
 
-True
+False
 

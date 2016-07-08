@@ -50,22 +50,10 @@ namespace KnockerWPF
             knckr.SelectRoom(new Uri("http://ya.ru"), "yandex short");
 
             rooms_list.ItemsSource = knckr.Rooms;
+            txt_route_address.DataContext = knckr.TargetRoute;
+            //txt_route_address.DataContext = this;
         }
         
-        /// <summary>
-        /// Check access to all existing items
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        public void StartKnocking(object sender, RoutedEventArgs e)
-        {
-            Cursor = Cursors.Wait;
-
-            knckr.KnockAll();
-
-            Cursor = Cursors.Arrow;
-        }
-
         public async void StartKnockingAsync(object sender, RoutedEventArgs e)
         {
             if (knckr.Rooms.Count == 0)
@@ -76,7 +64,7 @@ namespace KnockerWPF
 
             //Cursor = Cursors.Wait;
             btn_knock.IsEnabled = false;
-            pbar.IsIndeterminate = true;    
+            pbar_ping.IsIndeterminate = true;    
 
             TaskFactory tf = new TaskFactory();
             var tasks = new Task[knckr.Rooms.Count];
@@ -86,7 +74,7 @@ namespace KnockerWPF
             await tf.ContinueWhenAll(tasks, (x) => {
                 Dispatcher.Invoke(() => 
                 {
-                    pbar.IsIndeterminate = false;
+                    pbar_ping.IsIndeterminate = false;
                     btn_knock.IsEnabled = true;
                 });
             });
@@ -163,15 +151,32 @@ namespace KnockerWPF
         {
             try
             {
+                btn_trace.IsEnabled = false;
+                pbar_trace.IsIndeterminate = true;
+                
                 Uri route = new Uri(txt_route_address.Text);
+                int hops = Convert.ToInt32(txt_trace_hops.Text);
+                int timeout = Convert.ToInt32(txt_trace_timeout.Text);
                 string response = null;
-                response = await knckr.TraceTheRoute(route);
+                Task<string> task = knckr.TraceTheRoute(route, hops, timeout);
 
-                txt_details.Text = response;
+                await task.ContinueWith((a) =>
+                {
+                    response = a.Result;
+                    Dispatcher.Invoke(() =>
+                    {
+                        pbar_trace.IsIndeterminate = false;
+                        btn_trace.IsEnabled = true;
+                        txt_details.Text = response;
+                    });
+                });
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "All fucked up!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(string.Format("Application error: {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                if (pbar_trace.IsIndeterminate)
+                    pbar_ping.IsIndeterminate = false;
             }
         }
     }

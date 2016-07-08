@@ -91,7 +91,7 @@
                             <Image Source="/Resources/ic_minus.ico" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
                         </Grid>
                     </Button>
-                    <ProgressBar x:Name="pbar" Height="24" Margin="582,298,13,0" VerticalAlignment="Top"/>
+                    <ProgressBar x:Name="pbar_ping" Height="24" Margin="582,298,13,0" VerticalAlignment="Top"/>
                     <Button x:Name="btn_del_all" HorizontalAlignment="Left" Margin="582,120,0,0" VerticalAlignment="Top" Width="109" Height="46" FontFamily="Arial Narrow" FontSize="14" Click="btn_del_all_Click">
                         <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <TextBlock Text="Clear all  " VerticalAlignment="Center" HorizontalAlignment="Right"  TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="15"/>
@@ -102,16 +102,26 @@
             </TabItem>
             <TabItem Header="Traceroute check">
                 <Grid Background="#FFE5E5E5" HorizontalAlignment="Left" Width="704">
-                    <TextBox x:Name="txt_route_address" HorizontalAlignment="Left" Height="23" Margin="49,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="217"/>
-                    <Button x:Name="btn_trace" HorizontalAlignment="Left" Margin="362,21,0,0" VerticalAlignment="Top" Width="110" Height="46" FontFamily="Arial Narrow" FontSize="14" Click="btn_trace_Click">
+                    <TextBox x:Name="txt_route_address" HorizontalAlignment="Left" Height="23" Margin="43,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="272" ToolTip="Route URL address"/>
+                    <Button x:Name="btn_trace" HorizontalAlignment="Left" Margin="568,249,0,0" VerticalAlignment="Top" Width="126" Height="46" FontFamily="Arial Narrow" FontSize="14" Click="btn_trace_Click">
                         <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
                             <TextBlock Text="Knock!  " VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="18"/>
                             <Image Source="Resources/pic_fist.png" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
                         </Grid>
                     </Button>
-                    <ScrollViewer Margin="49,79,337,70" BorderBrush="Black" BorderThickness="1">
-                        <TextBlock x:Name="txt_details" TextWrapping="WrapWithOverflow" Background="#FFFBFFA5" FontSize="12" FontFamily="Courier New" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    <ScrollViewer Margin="30,93,153,20" BorderThickness="1">
+                        <TextBlock x:Name="txt_details" TextWrapping="WrapWithOverflow" Background="#FFFBFFA5" FontSize="12" FontFamily="Courier New" ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                                   DataContext="{Binding Path=TargetRoute.Details, IsAsync=True, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+                                   Text="{Binding Path=TargetRoute.Details, IsAsync=True, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, FallbackValue=...}" />
                     </ScrollViewer>
+                    <ProgressBar x:Name="pbar_trace" Height="24" Margin="568,312,10,0" VerticalAlignment="Top"/>
+                    <Label x:Name="lab_route" Content="Route address" HorizontalAlignment="Left" Margin="38,12,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txt_trace_hops" HorizontalAlignment="Left" Height="23" Margin="346,17,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43" ToolTip="The number of hops" Text="30"/>
+                    <TextBox x:Name="txt_trace_timeout" HorizontalAlignment="Left" Height="23" Margin="346,51,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="43" ToolTip="The timeout between hops" Text="1000"/>
+                    <Label x:Name="lab_hops" Content="Number of hops" HorizontalAlignment="Left" Margin="394,17,0,0" VerticalAlignment="Top"/>
+                    <Label x:Name="lab_timeout" Content="Timeout (in ms)" HorizontalAlignment="Left" Margin="394,51,0,0" VerticalAlignment="Top"/>
+                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="76" Margin="30,8,0,0" VerticalAlignment="Top" Width="521"/>
+                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="243" Margin="30,93,0,0" VerticalAlignment="Top" Width="521"/>
                 </Grid>
             </TabItem>
         </TabControl>

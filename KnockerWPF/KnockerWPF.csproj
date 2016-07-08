@@ -72,19 +72,12 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="modal_check_result.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="modal_newroom.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="modal_check_result.xaml.cs">
-      <DependentUpon>modal_check_result.xaml</DependentUpon>
-    </Compile>
     <Compile Include="modal_newroom.xaml.cs">
       <DependentUpon>modal_newroom.xaml</DependentUpon>
     </Compile>

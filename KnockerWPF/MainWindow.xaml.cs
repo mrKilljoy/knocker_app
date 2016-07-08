@@ -22,6 +22,8 @@ namespace KnockerWPF
     {
         KnockerLib.Knocker knckr;
 
+        private System.Text.RegularExpressions.Regex route_validator; 
+
         public MainWindow()
         {
             knckr = new KnockerLib.Knocker();
@@ -37,6 +39,7 @@ namespace KnockerWPF
         private void EventSubscriber()
         {
             rooms_list.SelectionChanged += EventHandler_RowHooked;
+            txt_route_address.TextChanged += EventHandler_ValidateRouteURI;
         }
 
         /// <summary>
@@ -51,7 +54,8 @@ namespace KnockerWPF
 
             rooms_list.ItemsSource = knckr.Rooms;
             txt_route_address.DataContext = knckr.TargetRoute;
-            //txt_route_address.DataContext = this;
+            route_validator = new System.Text.RegularExpressions.Regex(@"^http(s)?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$");
+
         }
         
         public async void StartKnockingAsync(object sender, RoutedEventArgs e)
@@ -153,8 +157,9 @@ namespace KnockerWPF
             {
                 btn_trace.IsEnabled = false;
                 pbar_trace.IsIndeterminate = true;
-                
-                Uri route = new Uri(txt_route_address.Text);
+
+                string url_address = string.Format("{0}{1}", cmb_protocol.Text, txt_route_address.Text);
+                Uri route = new Uri(url_address);
                 int hops = Convert.ToInt32(txt_trace_hops.Text);
                 int timeout = Convert.ToInt32(txt_trace_timeout.Text);
                 string response = null;
@@ -175,9 +180,25 @@ namespace KnockerWPF
             {
                 MessageBox.Show(string.Format("Application error: {0}", ex.Message), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
 
-                if (pbar_trace.IsIndeterminate)
-                    pbar_ping.IsIndeterminate = false;
+                Dispatcher.Invoke(() => {
+                    pbar_trace.IsIndeterminate = false;
+                    btn_trace.IsEnabled = true;
+                });
             }
+        }
+
+        /// <summary>
+        /// Color validation of route URI
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void EventHandler_ValidateRouteURI(object sender, TextChangedEventArgs e)
+        {
+            string address = string.Format("{0}{1}", cmb_protocol.Text, txt_route_address.Text);
+            if (route_validator.IsMatch(address))
+                txt_route_address.Background = Brushes.LightSeaGreen;
+            else
+                txt_route_address.Background = Brushes.PaleVioletRed;
         }
     }
 }

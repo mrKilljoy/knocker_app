@@ -26,7 +26,7 @@ namespace KnockerLib
 
         public DestinationRoom TargetRoute { get { return _route; } }
 
-        public void SelectRoom(Uri room_address, string room_name)
+        public void SelectPingRoom(Uri room_address, string room_name)
         {
             if (room_address == null)
                 return;
@@ -37,7 +37,7 @@ namespace KnockerLib
                 ));
         }
 
-        public void SelectRoute(Uri route_address)
+        public void SelectRouteRoom(Uri route_address)
         {
             if (route_address == null)
                 return;
@@ -45,67 +45,20 @@ namespace KnockerLib
             _route = new DestinationRoom(route_address, null, CheckType.Trace);
         }
 
-        public void DropRoom(int index)
+        public void DropPingRoom(int index)
         {
             if (index < 0 || index >= _rooms.Count)
                 return;
 
             _rooms.RemoveAt(index);
         }
-
-        public Dictionary<int, KnockResult> KnockAll()
-        {
-            if (_rooms.Count < 1)
-                return null;
-
-            Ping pocker = new Ping();
-
-            for (int i = 0; i < _rooms.Count; i++)
-            {
-                var room = _rooms[i];
-
-                try
-                {
-                    var reply = pocker.Send(room.Address.Host);
-
-                    switch (reply.Status)
-                    {
-                        case IPStatus.Success:
-                            {
-                                room.State = RoomState.Open;
-                                break;
-                            }
-                        case IPStatus.Unknown:
-                            {
-                                room.State = RoomState.Unknown;
-                                break;
-                            }
-                        default:
-                            {
-                                room.State = RoomState.Unknown;
-                                room.Details = reply.Status.ToString();
-                                break;
-                            }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    continue;
-                }
-            }
-
-            Dictionary<int, KnockResult> results = new Dictionary<int, KnockResult>();
-            for (int i = 0; i < _rooms.Count; i++)
-                results.Add(i, new KnockResult() { RoomStatus = _rooms[i].State });
-
-            return results;
-        }
+        
 
         /// <summary>
         /// Check availability of single resource (async version)
         /// </summary>
         /// <param name="index">Room index</param>
-        public async Task KnockAtAsync(int index)
+        public async Task PingRoomAsync(int index)
         {
             if (_rooms.Count < 1 || index >= _rooms.Count)
                 return;
@@ -208,50 +161,7 @@ namespace KnockerLib
             }
         }
 
-        private async Task Traceroute_v2(DestinationRoom routed_room)
-        {
-            PingReply ping_result = null;
-
-            StringBuilder trace_result = new StringBuilder();
-            using (Ping sender = new Ping())
-            {
-                PingOptions pingOptions = new PingOptions(1, true);
-                System.Diagnostics.Stopwatch stopWatch = new System.Diagnostics.Stopwatch();
-                byte[] bytes = new byte[32];
-                int maxHops = 30;
-
-                for (int i = 1; i < maxHops + 1; i++)
-                {
-                    stopWatch.Reset();
-                    stopWatch.Start();
-                    ping_result = await sender.SendPingAsync(routed_room.Address.Host, 1000, new byte[32], pingOptions);
-                    stopWatch.Stop();
-
-                    if (ping_result.Status != IPStatus.TtlExpired && ping_result.Status != IPStatus.Success)
-                        trace_result.AppendLine(string.Format("{0} \t{1}", i, ping_result.Status.ToString()));
-                    else
-                    {
-                        IPHostEntry host = Dns.Resolve(ping_result.Address.ToString());
-
-                        if (host.HostName == ping_result.Address.ToString())
-                            trace_result.AppendLine(string.Format("{0}\t{1} ms\t{2}", i, stopWatch.ElapsedMilliseconds, ping_result.Address));
-                        else
-                            trace_result.AppendLine(string.Format("{0}\t{1} ms\t{2} \t[{3}]", i, stopWatch.ElapsedMilliseconds, ping_result.Address, host.HostName));
-
-                    }
-
-                    if (ping_result.Status == IPStatus.Success)
-                    {
-                        routed_room.State = RoomState.Open;
-                        break;
-                    }
-
-                    pingOptions.Ttl++;
-                }
-            }
-        }
-
-        public async Task<string> TraceTheRoute(Uri route_address, int max_hops, int timeout)
+        public async Task<string> TraceRoomAsync(Uri route_address, int max_hops, int timeout)
         {
             if (route_address == null)
                 return null;
@@ -265,12 +175,139 @@ namespace KnockerLib
             return answer;
         }
 
-        public async Task KnockThroughTheRoute()
+        public bool CheckRoomPort(Uri room_address, int timeout)
         {
-            if (_route == null)
-                throw new NullReferenceException("Route is not defined");
+            TcpClient client = new TcpClient();
+            client.SendTimeout = timeout;
+            client.ReceiveTimeout = timeout;
+            bool result = false;
 
-            await Traceroute_v2(_route);
+            try
+            {
+                client.Connect(room_address.Host, room_address.Port);
+            }
+            catch (Exception)
+            {
+                
+            }
+            finally
+            { result = client.Connected; }
+            
+            client.Close();
+
+            return result;
         }
+
+        public async Task<bool> CheckRoomPortAsync(Uri room_address, int timeout)
+        {
+            TcpClient tcp_cl = new TcpClient();
+            
+            bool result = false;
+
+            try
+            {
+                using (CancellationTokenSource cts = new CancellationTokenSource(timeout))
+                {
+                    var token = cts.Token;
+                    token.Register(() => { tcp_cl.Close(); });
+
+                    await Task.Run(() => tcp_cl.ConnectAsync(room_address.Host, room_address.Port), token);
+                }
+                //await client.ConnectAsync(room_address.Host, room_address.Port);
+            }
+            catch (Exception)
+            {
+                if (tcp_cl.Client == null)
+                    return false;
+            }
+
+            result = tcp_cl.Connected;
+
+            tcp_cl.Close();
+
+            return result;
+        }
+
+        public bool[] CheckRoomPort(Uri room_address, int timeout, int range_from, int range_to)
+        {
+            bool range_left_valid = range_from > 0 && range_from < 65535;
+            bool range_right_valid = range_to > 0 && range_to < 65535;
+
+            if (range_from > range_to || ((!range_left_valid || !range_right_valid)))
+                throw new ArgumentException("Defined range is not valid!");
+
+            TcpClient client = new TcpClient();
+            client.ReceiveTimeout = timeout;
+            client.SendTimeout = timeout;
+
+            bool[] results = new bool[range_to - range_from + 1];
+            int counter = 0;
+
+            for (int i = range_from; i <= range_to; i++)
+            {
+                try
+                {
+                    client.Connect(room_address.Host, i);
+                }
+                catch (Exception)
+                {
+
+                }
+                results[counter] = client.Connected;
+                counter++;
+            }
+
+            client.Close();
+
+            return results;
+        }
+
+        public async Task<bool[]> CheckRoomPortAsync(Uri room_address, int timeout, int range_from, int range_to)
+        {
+            bool range_left_valid = range_from > 0 && range_from < 65535;
+            bool range_right_valid = range_to > 0 && range_to < 65535;
+
+            if (range_from > range_to || ((!range_left_valid || !range_right_valid)))
+                throw new ArgumentException("Defined range is not valid!");
+
+            TcpClient tcp_cl = new TcpClient();
+            bool[] results = new bool[range_to - range_from + 1];
+            int counter = 0;
+
+            for (int i = range_from; i <= range_to; i++)
+            {
+                try
+                {
+                    using (CancellationTokenSource cts = new CancellationTokenSource(timeout))
+                    {
+                        var token = cts.Token;
+                        token.Register(() => { tcp_cl.Close(); });
+
+                        await tcp_cl.ConnectAsync(room_address.Host, i);
+                    }
+                }
+                catch (Exception)
+                {
+                    //if (tcp_cl.Client == null)
+                    //{
+                    results[counter] = false;
+                    counter++;
+
+                    //Socket sck = 
+                    tcp_cl.Client = new Socket(socketType: SocketType.Stream, protocolType: ProtocolType.Tcp);
+                    continue;
+                    //}
+                }
+
+                results[counter] = tcp_cl.Connected;
+                counter++;
+                tcp_cl.Client.Disconnect(true);
+            }
+
+            tcp_cl.Close();
+
+            return results;
+        }
+
     }
 }

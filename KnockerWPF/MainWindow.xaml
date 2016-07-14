@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KnockerWPF"
-        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="main_window" x:Class="KnockerWPF.MainWindow"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" 
+        xmlns:Sophisticated_UI="clr-namespace:Sophisticated_UI;assembly=Sophisticated_UI" x:Name="main_window" x:Class="KnockerWPF.MainWindow"
         mc:Ignorable="d"
         Title="Knocker" Height="414" Width="720" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" MinWidth="702" MinHeight="369">
     <Window.Resources>
@@ -151,6 +152,48 @@
                         <System:String>http://</System:String>
                         <System:String>https://</System:String>
                     </ComboBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Port check">
+                <TabItem.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FFD4D0C8" Offset="0.282"/>
+                        <GradientStop Color="White" Offset="0.042"/>
+                    </LinearGradientBrush>
+                </TabItem.Background>
+                <Grid HorizontalAlignment="Left" Width="704">
+                    <Grid.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0">
+                            <GradientStop Color="#FFB0B0B0" Offset="1"/>
+                            <GradientStop Color="#FFE0E0E0"/>
+                        </LinearGradientBrush>
+                    </Grid.Background>
+                    <TextBox x:Name="txt_target_address" HorizontalAlignment="Left" Height="23" Margin="115,40,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="170" ToolTip="URL address" TabIndex="2147483640" Background="PaleVioletRed"/>
+                    <ComboBox x:Name="cmb_target_prot" HorizontalAlignment="Left" Margin="44,40,0,0" VerticalAlignment="Top" Width="62" IsReadOnly="True" SelectedIndex="0" Height="23" ToolTip="Protocol type" TabIndex="2147483641">
+                        <System:String>http://</System:String>
+                        <System:String>https://</System:String>
+                    </ComboBox>
+                    <TextBox x:Name="txt_port_single" HorizontalAlignment="Left" Height="23" Margin="146,100,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="63" ToolTip="Port of target address"/>
+                    <Button x:Name="btn_checkport" HorizontalAlignment="Left" Margin="199,252,0,0" VerticalAlignment="Top" Width="126" Height="46" FontFamily="Arial Narrow" FontSize="14" TabIndex="2147483644" Click="btn_checkport_Click">
+                        <Grid Width="100" Height="40" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <TextBlock Text="Knock!  " VerticalAlignment="Center" HorizontalAlignment="Right" TextWrapping="WrapWithOverflow" MaxWidth="60" FontFamily="Arial Narrow" FontSize="18"/>
+                            <Image Source="Resources/pic_fist.png" VerticalAlignment="Top" HorizontalAlignment="Left" Visibility="Visible" IsEnabled="False"/>
+                        </Grid>
+                    </Button>
+                    <TextBox x:Name="txt_ports_from" HorizontalAlignment="Left" Height="23" Margin="146,137,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="48" IsEnabled="False"/>
+                    <TextBox x:Name="txt_ports_to" HorizontalAlignment="Left" Height="23" Margin="219,137,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="48" IsEnabled="False"/>
+                    <RadioButton x:Name="rb_port_single" Content="Single port" HorizontalAlignment="Left" Margin="58,105,0,0" VerticalAlignment="Top" GroupName="rb_group" IsChecked="True"/>
+                    <RadioButton x:Name="rb_port_multiple" Content="Port range" HorizontalAlignment="Left" Margin="58,141,0,0" VerticalAlignment="Top" GroupName="rb_group"/>
+                    <Label x:Name="label" Content="-" HorizontalAlignment="Left" Margin="199,135,0,0" VerticalAlignment="Top" FontSize="16"/>
+                    <GroupBox x:Name="gr_port_mode" Header="Port selection" HorizontalAlignment="Left" Height="94" Margin="44,80,0,0" VerticalAlignment="Top" Width="241">
+                    </GroupBox>
+                    <Label x:Name="lab_target_address" Content="Target address" HorizontalAlignment="Left" Margin="40,13,0,0" VerticalAlignment="Top"/>
+                    <ProgressBar x:Name="pbar_port" Height="24" Margin="58,262,520,0" VerticalAlignment="Top"/>
+                    <ScrollViewer Margin="343,13,46,153" BorderThickness="1">
+                        <TextBlock x:Name="txt_portcheck_results" TextWrapping="WrapWithOverflow" Background="#FFFBFFA5" FontSize="12" FontFamily="Courier New" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    </ScrollViewer>
+                    <TextBox x:Name="txt_portcheck_timeout" HorizontalAlignment="Left" Height="23" Margin="120,182,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="61"/>
+                    <Label x:Name="lab_portcheck_timeout" Content="Timeout (ms)" HorizontalAlignment="Left" Margin="40,182,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
         </TabControl>

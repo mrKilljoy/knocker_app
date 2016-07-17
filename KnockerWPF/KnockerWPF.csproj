@@ -115,9 +115,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KnockerLib\KnockerLib.csproj">
+    <ProjectReference Include="..\KnockerLib\KnockerNET.csproj">
       <Project>{0935ee9b-274a-44bc-8328-ba0972248870}</Project>
-      <Name>KnockerLib</Name>
+      <Name>KnockerNET</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

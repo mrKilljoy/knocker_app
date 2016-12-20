@@ -1,0 +1,11 @@
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerTest\bin\Debug\KnockerTest.dll
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerTest\bin\Debug\KnockerTest.pdb
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerTest\bin\Debug\KnockerNET.dll
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerTest\bin\Debug\nunit.framework.dll
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerTest\bin\Debug\KnockerNET.pdb
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerTest\bin\Debug\nunit.framework.xml
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerTest\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.xml
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerTest\obj\Debug\KnockerTest.csprojResolveAssemblyReference.cache
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerTest\obj\Debug\KnockerTest.dll
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerTest\obj\Debug\KnockerTest.pdb

@@ -13,25 +13,26 @@ namespace KnockerLib
 {
     public class Knocker
     {
-        private ObservableCollection<DestinationRoom> _rooms;
+        private ObservableCollection<DestinationPoint> _rooms;
 
-        private DestinationRoom _route = null;
+        private DestinationPoint _route = null;
 
         public Knocker()
         {
-            _rooms = new ObservableCollection<DestinationRoom>();
+            _rooms = new ObservableCollection<DestinationPoint>();
         }
 
-        public ObservableCollection<DestinationRoom> Rooms { get { return _rooms; } }
+        public ObservableCollection<DestinationPoint> Rooms { get { return _rooms; } }
 
-        public DestinationRoom TargetRoute { get { return _route; } }
+        public DestinationPoint TargetRoute { get { return _route; } }
 
+        #region Methods
         public void SelectPingRoom(Uri room_address, string room_name)
         {
             if (room_address == null)
                 return;
             
-            _rooms.Add(new DestinationRoom(
+            _rooms.Add(new DestinationPoint(
                 room_address,
                 string.IsNullOrEmpty(room_name) ? room_address.AbsoluteUri.ToString() : room_name
                 ));
@@ -42,7 +43,7 @@ namespace KnockerLib
             if (route_address == null)
                 return;
 
-            _route = new DestinationRoom(route_address, null, CheckType.Trace);
+            _route = new DestinationPoint(route_address, null, CheckType.Trace);
         }
 
         public void DropPingRoom(int index)
@@ -69,15 +70,15 @@ namespace KnockerLib
                     reply = pocker.Send(room.Address.Host);
 
                     if (reply.Status == IPStatus.Success)
-                        room.State = RoomState.Open;
+                        room.State = PointState.Open;
                     else
-                        room.State = RoomState.Unknown;
+                        room.State = PointState.Unknown;
                     room.Details = reply.Status.ToString();
 
                 }
                 catch (Exception ex)
                 {
-                    room.State = RoomState.Unknown;
+                    room.State = PointState.Unknown;
                     room.Details = "UnknownHostException";
                 }
             }
@@ -103,15 +104,15 @@ namespace KnockerLib
                     reply = await pocker.SendPingAsync(room.Address.Host);
 
                     if (reply.Status == IPStatus.Success)
-                        room.State = RoomState.Open;
+                        room.State = PointState.Open;
                     else
-                        room.State = RoomState.Unknown;
+                        room.State = PointState.Unknown;
                     room.Details = reply.Status.ToString();
 
                 }
                 catch (Exception ex)
                 {
-                    room.State = RoomState.Unknown;
+                    room.State = PointState.Unknown;
                     room.Details = "UnknownHostException";
                 }
             }
@@ -198,7 +199,7 @@ namespace KnockerLib
             if (max_hops < 1 || timeout < 1)
                 return null;
 
-            DestinationRoom routed_room = new DestinationRoom(route_address, null, CheckType.Trace);
+            DestinationPoint routed_room = new DestinationPoint(route_address, null, CheckType.Trace);
             string answer = Traceroute(routed_room.Address, max_hops, timeout).Result;
 
             return answer;
@@ -212,7 +213,7 @@ namespace KnockerLib
             if (max_hops < 1 || timeout < 1)
                 return null;
 
-            DestinationRoom routed_room = new DestinationRoom(route_address, null, CheckType.Trace);
+            DestinationPoint routed_room = new DestinationPoint(route_address, null, CheckType.Trace);
             string answer = await Traceroute(routed_room.Address, max_hops, timeout);
 
             return answer;
@@ -270,5 +271,6 @@ namespace KnockerLib
 
             return result;
         }
+        #endregion
     }
 }

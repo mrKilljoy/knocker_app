@@ -8,6 +8,6 @@ namespace KnockerLib
 {
     public struct KnockResult
     {
-        public RoomState RoomStatus { get; set; }
+        public PointState RoomStatus { get; set; }
     }
 }

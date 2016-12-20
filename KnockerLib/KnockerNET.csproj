@@ -41,9 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DestinationRoom.cs" />
-    <Compile Include="Knocker.cs" />
-    <Compile Include="KnockResult.cs" />
+    <Compile Include="PointCheckSettings.cs" />
+    <Compile Include="DestinationPoint.cs" />
+    <Compile Include="PointTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

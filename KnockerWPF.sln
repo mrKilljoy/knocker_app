@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockerWPF", "KnockerWPF\Kn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockerNET", "KnockerLib\KnockerNET.csproj", "{0935EE9B-274A-44BC-8328-BA0972248870}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnockerTest", "KnockerTest\KnockerTest.csproj", "{F2C33E69-8FDF-427C-911C-163493991471}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0935EE9B-274A-44BC-8328-BA0972248870}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0935EE9B-274A-44BC-8328-BA0972248870}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0935EE9B-274A-44BC-8328-BA0972248870}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2C33E69-8FDF-427C-911C-163493991471}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2C33E69-8FDF-427C-911C-163493991471}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2C33E69-8FDF-427C-911C-163493991471}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2C33E69-8FDF-427C-911C-163493991471}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

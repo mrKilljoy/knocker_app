@@ -67,7 +67,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
+    <Compile Include="Infrastructure\PointAddressValidationRule.cs" />
+    <Compile Include="Infrastructure\UrlRegexValidator.cs" />
+    <Compile Include="Infrastructure\UrlRxConverter.cs" />
+    <Compile Include="ViewModels\ParametersVM.cs" />
+    <Compile Include="ViewModels\PortsTabVM.cs" />
+    <Compile Include="ViewModels\ModalVM.cs" />
+    <Compile Include="ViewModels\PingTabVM.cs" />
+    <Compile Include="ViewModels\TraceTabVM.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -75,17 +84,18 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="modal_newroom.xaml">
+    <Page Include="Views\modal_newroom.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="modal_newroom.xaml.cs">
+    <Compile Include="Views\modal_newroom.xaml.cs">
       <DependentUpon>modal_newroom.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -146,6 +156,18 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\stat_deny.png" />
+    <Resource Include="Resources\stat_ok.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\di_gray.ico" />
+    <Resource Include="Resources\di_green.ico" />
+    <Resource Include="Resources\di_red.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

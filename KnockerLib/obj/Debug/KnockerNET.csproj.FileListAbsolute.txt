@@ -2,3 +2,4 @@ C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerLib\bin\Deb
 C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerLib\bin\Debug\KnockerNET.pdb
 C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerLib\obj\Debug\KnockerNET.dll
 C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerLib\obj\Debug\KnockerNET.pdb
+C:\Users\123\Documents\Visual Studio 2015\Projects\KnockerWPF\KnockerLib\obj\Debug\KnockerNET.csprojResolveAssemblyReference.cache
